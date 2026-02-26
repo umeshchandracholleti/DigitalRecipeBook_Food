@@ -1,5 +1,5 @@
 import { supabase, supabaseAdmin } from '../config/database.js';
-import logger from './logger.js';
+import logger from '../utils/logger.js';
 
 /**
  * User Model - Database operations for users
@@ -34,7 +34,7 @@ export const UserModel = {
    */
   async findByEmail(email) {
     try {
-      const { data, error } = await supabase
+      const { data, error } = await supabaseAdmin
         .from('users')
         .select('*')
         .eq('email', email)
@@ -55,7 +55,7 @@ export const UserModel = {
    */
   async findById(id) {
     try {
-      const { data, error } = await supabase
+      const { data, error } = await supabaseAdmin
         .from('users')
         .select('*')
         .eq('id', id)
@@ -77,7 +77,7 @@ export const UserModel = {
    */
   async update(id, updates) {
     try {
-      const { data, error } = await supabase
+      const { data, error } = await supabaseAdmin
         .from('users')
         .update(updates)
         .eq('id', id)
