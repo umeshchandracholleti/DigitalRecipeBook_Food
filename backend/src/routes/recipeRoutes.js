@@ -1,20 +1,32 @@
 import express from 'express';
+import { authMiddleware } from '../middleware/auth.js';
+import {
+  getAllRecipes,
+  getUserRecipes,
+  getRecipeById,
+  createRecipe,
+  updateRecipe,
+  deleteRecipe,
+  addReview,
+  getRecipeReviews,
+} from '../controllers/recipeController.js';
 
 const router = express.Router();
 
 /**
  * Recipe Routes
- * TODO: Implement recipe endpoints
  */
 
-// GET /api/recipes - Get all public recipes
-router.get('/', (req, res) => {
-  res.json({ message: 'Get all recipes endpoint - coming soon' });
-});
+// Public routes
+router.get('/', getAllRecipes); // Get all recipes with search & pagination
+router.get('/:id', getRecipeById); // Get single recipe with details
+router.get('/:id/reviews', getRecipeReviews); // Get reviews for a recipe
+router.get('/user/:userId', getUserRecipes); // Get user's recipes
 
-// POST /api/recipes - Create new recipe (Protected)
-router.post('/', (req, res) => {
-  res.json({ message: 'Create recipe endpoint - coming soon' });
-});
+// Protected routes (require authentication)
+router.post('/', authMiddleware, createRecipe); // Create new recipe
+router.put('/:id', authMiddleware, updateRecipe); // Update recipe
+router.delete('/:id', authMiddleware, deleteRecipe); // Delete recipe
+router.post('/:id/reviews', authMiddleware, addReview); // Add review to recipe
 
 export default router;
