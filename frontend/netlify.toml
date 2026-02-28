@@ -2,7 +2,6 @@
 
 [build]
   command = "npm run build"
-  functions = "netlify/functions"
   publish = "dist"
 
 [build.environment]
@@ -25,13 +24,3 @@
   for = "/api/*"
   [headers.values]
     Cache-Control = "no-cache, no-store, must-revalidate"
-
-[context.production]
-  command = "npm run build"
-  [context.production.environment]
-    VITE_API_BASE_URL = "https://api.recipebook.com"
-
-[context.deploy-preview]
-  command = "npm run build"
-  [context.deploy-preview.environment]
-    VITE_API_BASE_URL = "https://api-preview.recipebook.com"
