@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { AuthProvider } from './context/AuthContext';
 import { ThemeProvider } from './context/ThemeContext';
 import ProtectedRoute from './components/auth/ProtectedRoute';
+import ErrorBoundary from './components/auth/ErrorBoundary';
 
 // Pages
 import Home from './pages/Home';
@@ -19,37 +20,39 @@ import Footer from './components/common/Footer';
 
 function App() {
   return (
-    <ThemeProvider>
-      <AuthProvider>
-        <Router>
-          <div className="flex flex-col min-h-screen">
-            <Navbar />
-            <main className="flex-grow">
-              <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/register" element={<Register />} />
-                
-                {/* Protected Routes */}
-                <Route element={<ProtectedRoute />}>
-                  <Route path="/dashboard" element={<Dashboard />} />
-                  <Route path="/my-recipes" element={<MyRecipes />} />
-                  <Route path="/create-recipe" element={<CreateRecipe />} />
-                </Route>
+    <ErrorBoundary>
+      <ThemeProvider>
+        <AuthProvider>
+          <Router>
+            <div className="flex flex-col min-h-screen">
+              <Navbar />
+              <main className="flex-grow">
+                <Routes>
+                  <Route path="/" element={<Home />} />
+                  <Route path="/login" element={<Login />} />
+                  <Route path="/register" element={<Register />} />
+                  
+                  {/* Protected Routes */}
+                  <Route element={<ProtectedRoute />}>
+                    <Route path="/dashboard" element={<Dashboard />} />
+                    <Route path="/my-recipes" element={<MyRecipes />} />
+                    <Route path="/recipes/create" element={<CreateRecipe />} />
+                  </Route>
 
-                {/* Public Recipe Route */}
-                <Route path="/recipe/:id" element={<RecipeDetail />} />
+                  {/* Public Recipe Route */}
+                  <Route path="/recipes/:id" element={<RecipeDetail />} />
 
-                {/* 404 */}
-                <Route path="/not-found" element={<NotFound />} />
-                <Route path="*" element={<Navigate to="/not-found" />} />
-              </Routes>
-            </main>
-            <Footer />
-          </div>
-        </Router>
-      </AuthProvider>
-    </ThemeProvider>
+                  {/* 404 */}
+                  <Route path="/not-found" element={<NotFound />} />
+                  <Route path="*" element={<Navigate to="/not-found" />} />
+                </Routes>
+              </main>
+              <Footer />
+            </div>
+          </Router>
+        </AuthProvider>
+      </ThemeProvider>
+    </ErrorBoundary>
   );
 }
 
