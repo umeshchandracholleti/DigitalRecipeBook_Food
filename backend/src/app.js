@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import routes from './routes/index.js';
+import logger from './utils/logger.js';
 
 dotenv.config();
 
@@ -22,7 +23,7 @@ app.use('/api', routes);
 
 // Error handling middleware
 app.use((err, req, res, next) => {
-  console.error(err.stack);
+  logger.error('Server error', err.message);
   res.status(err.status || 500).json({
     error: err.message || 'Internal Server Error',
     status: err.status || 500,
